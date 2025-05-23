@@ -7,6 +7,7 @@ A simple Flutter app that helps students calculate their GPA based on letter gra
 - Dynamic course entry
 - Grade-to-point calculation
 - Responsive design
+- Light/Dark mode support
 
 ## 🖼️ Screenshots
 
@@ -14,7 +15,10 @@ A simple Flutter app that helps students calculate their GPA based on letter gra
 |-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | ![Home](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home-Empty.png) | ![Home](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home.png) | ![Result](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Result.png) |
 
-## 📦 Getting Started
+## 📥 Download APK
+You can download the APK file for Android devices from the [Releases Page](https://github.com/mllrr96/gpa_calculator/releases/)
+
+## 📦 Build from Source
 
 ### Clone the repository to your local machine
 ```bash

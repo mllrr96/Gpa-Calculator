@@ -36,6 +36,9 @@ class CourseCard extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     maxLength: 30,
+                    onChanged: (val){
+                      course.courseName = val;
+                    },
                     decoration: InputDecoration(
                       counterText: '',
                       hintText: 'Course Name',

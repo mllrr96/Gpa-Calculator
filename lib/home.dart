@@ -132,7 +132,8 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 if (courses.length == 1 &&
                     courses[0].credit == 0 &&
-                    courses[0].courseName == null &&
+                    (courses[0].courseName == null ||
+                        courses[0].courseName!.isEmpty) &&
                     courses[0].grade == null) {
                   return;
                 }

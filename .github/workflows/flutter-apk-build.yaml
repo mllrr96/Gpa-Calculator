@@ -1,10 +1,14 @@
 name: Build Flutter APK file
 
 on:
+
   workflow_dispatch:
   push:
     tags:
       - '*'
+
+permissions:
+  contents: write
 
 jobs:
   build:

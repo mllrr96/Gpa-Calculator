@@ -6,9 +6,7 @@ A simple Flutter app that helps students calculate their GPA based on letter gra
 
 - Dynamic course entry
 - Grade-to-point calculation
-- Separate modes for Undergraduate and MBA
 - Responsive design
-- Custom UI styling
 
 ## 🖼️ Screenshots
 

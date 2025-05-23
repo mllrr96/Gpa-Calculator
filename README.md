@@ -16,22 +16,22 @@ A simple Flutter app that helps students calculate their GPA based on letter gra
 
 ## 📦 Getting Started
 
-# Clone the repository to your local machine
+### Clone the repository to your local machine
 ```bash
-git clone https://github.com/yourusername/gpa-calculator.git
+git clone https://github.com/mllrr96/gpa_calculator.git
 ```
 
-# Move into the project directory
+### Move into the project directory
 ```bash
 cd gpa-calculator
 ```
 
-# Install all the required Flutter packages
+### Install all the required Flutter packages
 ```bash
 flutter pub get
 ```
 
-# Run the app on your connected device or emulator
+### Run the app on your connected device or emulator
 ```bash
 flutter run
 ```

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:gap/gap.dart';
 import 'package:gpa_calculator/course_card.dart';
 import 'package:gpa_calculator/course_model.dart';
 import 'package:gpa_calculator/extension.dart';
+import 'package:lottie/lottie.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -40,8 +43,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
     return GestureDetector(
       onTap: context.unfocus,
       child: Scaffold(
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
             statusBarBrightness: Brightness.dark,
           ),
           backgroundColor:
-              isDarkMode
+              context.isDarkMode
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).colorScheme.primary,
           title: Text(widget.title, style: TextStyle(color: Colors.white)),
@@ -63,9 +64,44 @@ class _HomePageState extends State<HomePage> {
                 showAboutDialog(
                   context: context,
                   applicationName: 'GPA Calculator',
-                  applicationVersion: '1.0.0',
-                  applicationIcon: Icon(LucideIcons.calculator),
-                  children: [Text('This app helps you calculate your GPA.')],
+                  applicationVersion: '1.0.1',
+                  applicationIcon: Icon(
+                    LucideIcons.calculator,
+                    color: Color(0xFFC89601),
+                  ),
+                  children: [
+                    Text('This app helps you calculate your GPA.'),
+                    Divider(),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(8.0),
+                      onTap: () {
+                        try {
+                          launchUrl(
+                            Uri.parse(
+                              'https://github.com/mllrr96/Gpa-Calculator',
+                            ),
+                          );
+                        } catch (_) {}
+                      },
+                      child: Ink(
+                        child: Row(
+                          children: [
+                            Lottie.asset(
+                              context.isDarkMode
+                                  ? 'assets/lottie/github-light.json'
+                                  : 'assets/lottie/github-dark.json',
+                              width: 40,
+                              height: 40,
+                            ),
+                            Gap(10),
+                            Flexible(
+                              child: Text('Made with love by Mohammed Ragheb'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               },
             ),
@@ -83,9 +119,7 @@ class _HomePageState extends State<HomePage> {
                     height: 70,
                     child: ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          courses.add(Course.empty());
-                        });
+                        setState(() => courses.add(Course.empty()));
                       },
                       child: Icon(LucideIcons.plus, size: 30),
                     ),
@@ -101,9 +135,7 @@ class _HomePageState extends State<HomePage> {
                   motion: const BehindMotion(),
                   children: [
                     SlidableAction(
-                      onPressed: (_) {
-                        setState(() => courses.removeAt(index));
-                      },
+                      onPressed: (_) => setState(() => courses.removeAt(index)),
                       backgroundColor: Colors.transparent,
                       foregroundColor: Colors.red,
                       icon: LucideIcons.trash2,
@@ -111,18 +143,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                child: CourseCard(
-                  course: course,
-                  onSelectCredit: (credit) {
-                    setState(() => courses[index].credit = credit);
-                  },
-                  onSelectGrade: (grade) {
-                    setState(() => courses[index].grade = grade);
-                  },
-                ),
+                child: CourseCard(course),
               );
             },
-            separatorBuilder: (_, _) => const SizedBox(height: 10),
+            separatorBuilder: (_, _) => const Gap(10),
           ),
         ),
         floatingActionButton: Row(
@@ -130,11 +154,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             FloatingActionButton(
               onPressed: () async {
-                if (courses.length == 1 &&
-                    courses[0].credit == 0 &&
-                    (courses[0].courseName == null ||
-                        courses[0].courseName!.isEmpty) &&
-                    courses[0].grade == null) {
+                if (courses.shouldNotReset) {
                   return;
                 }
                 // show dialog to confirm reset
@@ -149,7 +169,7 @@ class _HomePageState extends State<HomePage> {
               },
               child: Icon(LucideIcons.rotateCcw),
             ),
-            SizedBox(width: 10),
+            Gap(10),
             FloatingActionButton.extended(
               backgroundColor: Theme.of(context).colorScheme.secondary,
               onPressed: calculateGPA,

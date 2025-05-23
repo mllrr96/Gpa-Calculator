@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:gpa_calculator/course_model.dart';
 
+import 'course_grade_enum.dart';
+
 class CourseCard extends StatelessWidget {
-  const CourseCard({
-    super.key,
-    required this.course,
-    this.onSelectCredit,
-    this.onSelectGrade,
-  });
+  const CourseCard(this.course, {super.key});
 
   final Course course;
-  final void Function(int)? onSelectCredit;
-  final void Function(CourseGrade)? onSelectGrade;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +32,8 @@ class CourseCard extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     maxLength: 30,
-                    onChanged: (val){
-                      course.courseName = val;
-                    },
+                    textCapitalization: TextCapitalization.words,
+                    onChanged: (val) => course.courseName = val,
                     decoration: InputDecoration(
                       counterText: '',
                       hintText: 'Course Name',
@@ -51,7 +46,6 @@ class CourseCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14.0),
             child: Row(
@@ -66,17 +60,17 @@ class CourseCard extends StatelessWidget {
                     ),
                     value: course.credit == 0 ? null : course.credit,
                     items:
-                        List.generate(4, (index) => index + 1).map((
-                          int credit,
-                        ) {
-                          return DropdownMenuItem<int>(
-                            value: credit,
-                            child: Text(credit.toString()),
-                          );
-                        }).toList(),
+                        List.generate(4, (index) => index + 1)
+                            .map(
+                              (int credit) => DropdownMenuItem<int>(
+                                value: credit,
+                                child: Text(credit.toString()),
+                              ),
+                            )
+                            .toList(),
                     onChanged: (credit) {
                       if (credit == null) return;
-                      onSelectCredit?.call(credit);
+                      course.credit = credit;
                     },
                   ),
                 ),
@@ -98,14 +92,14 @@ class CourseCard extends StatelessWidget {
                         }).toList(),
                     onChanged: (grade) {
                       if (grade == null) return;
-                      onSelectGrade?.call(grade);
+                      course.grade = grade;
                     },
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 15),
+          Gap(12),
         ],
       ),
     );

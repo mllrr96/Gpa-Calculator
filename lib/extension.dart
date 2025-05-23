@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'course_model.dart';
+
+extension ListCourseExtension on List<Course> {
+  bool get shouldNotReset {
+    return length == 1 &&
+        this[0].credit == 0 &&
+        (this[0].courseName == null || this[0].courseName!.isEmpty) &&
+        this[0].grade == null;
+  }
+}
+
 extension BuildContextExtension on BuildContext {
+
+  bool get isDarkMode => MediaQuery.of(this).platformBrightness == Brightness.dark;
+
   void showGpaDialog(String gpa) {
     showDialog(
       context: this,

@@ -52,3 +52,4 @@ jobs:
             build/app/outputs/flutter-apk/Gpa-Calculator-x86_64.apk,
             build/app/outputs/flutter-apk/Gpa-Calculator-universal.apk
           allowUpdates: true
+          token: ${{ secrets.PAT_TOKEN }}

@@ -1,0 +1,54 @@
+name: Build Flutter APK file
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          architecture: x64
+          cache: true
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Run pub get
+        run: flutter pub get
+
+      - name: Build Split and Universal APKs
+        run: |
+          flutter build apk --split-per-abi
+          flutter build apk --release
+
+      - name: Rename APKs
+        run: |
+          cd build/app/outputs/flutter-apk
+          mv app-armeabi-v7a-release.apk Gpa-Calculator-armeabi-v7a.apk
+          mv app-arm64-v8a-release.apk Gpa-Calculator-arm64-v8a.apk
+          mv app-x86_64-release.apk Gpa-Calculator-x86_64.apk
+          mv app-release.apk Gpa-Calculator-universal.apk
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          artifacts: |
+            build/app/outputs/flutter-apk/Gpa-Calculator-arm64-v8a.apk,
+            build/app/outputs/flutter-apk/Gpa-Calculator-armeabi-v7a.apk,
+            build/app/outputs/flutter-apk/Gpa-Calculator-x86_64.apk,
+            build/app/outputs/flutter-apk/Gpa-Calculator-universal.apk
+          allowUpdates: true

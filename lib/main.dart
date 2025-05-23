@@ -20,6 +20,14 @@ class MyApp extends StatelessWidget {
           secondary: Color(0xFFC89601),
         ),
       ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFF002956),
+          secondary: Color(0xFFC89601),
+          brightness: Brightness.dark,
+        ),
+      ),
+      themeMode: ThemeMode.system,
       home: HomePage(title: 'GPA Calculator'),
     );
   }

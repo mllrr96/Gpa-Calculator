@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gpa_calculator/course_model.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -71,6 +72,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     InputDecoration decoration = InputDecoration(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -85,18 +88,25 @@ class _HomePageState extends State<HomePage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.dark,
+          ),
+          backgroundColor:
+              isDarkMode
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.primary,
           title: Text(widget.title, style: TextStyle(color: Colors.white)),
           actions: [
             IconButton(
               padding: EdgeInsets.all(16.0),
-              icon: Icon(Icons.info_outline, color: Colors.white),
+              icon: Icon(LucideIcons.info, color: Colors.white),
               onPressed: () {
                 showAboutDialog(
                   context: context,
                   applicationName: 'GPA Calculator',
                   applicationVersion: '1.0.0',
-                  applicationIcon: Icon(Icons.calculate_outlined),
+                  applicationIcon: Icon(LucideIcons.calculator),
                   children: [Text('This app helps you calculate your GPA.')],
                 );
               },
@@ -105,10 +115,11 @@ class _HomePageState extends State<HomePage> {
         ),
         body: SlidableAutoCloseBehavior(
           child: ListView.separated(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24.0,
-              vertical: 18.0,
-            ),
+            padding: const EdgeInsets.fromLTRB(24, 18, 24, 150),
+            // padding: const EdgeInsets.symmetric(
+            //   horizontal: 24.0,
+            //   vertical: 18.0,
+            // ),
             itemCount: courses.length + 1,
             itemBuilder: (context, index) {
               if (index == courses.length) {
@@ -122,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                           courses.add(Course.empty());
                         });
                       },
-                      child: Icon(Icons.add, size: 30),
+                      child: Icon(LucideIcons.plus, size: 30),
                     ),
                   ),
                 );
@@ -132,7 +143,8 @@ class _HomePageState extends State<HomePage> {
               return Slidable(
                 key: ValueKey(index),
                 endActionPane: ActionPane(
-                  motion: const ScrollMotion(),
+                  extentRatio: 0.25,
+                  motion: const BehindMotion(),
                   children: [
                     SlidableAction(
                       onPressed: (_) {
@@ -140,10 +152,10 @@ class _HomePageState extends State<HomePage> {
                           courses.removeAt(index);
                         });
                       },
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete_forever_outlined,
-                      label: 'Delete',
+                      backgroundColor: Colors.transparent,
+                      foregroundColor: Colors.red,
+                      icon: LucideIcons.trash2,
+                      // label: '',
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ],
@@ -182,6 +194,7 @@ class _HomePageState extends State<HomePage> {
                               child: DropdownButtonFormField<int>(
                                 decoration: decoration.copyWith(
                                   labelText: 'Credit',
+                                  isDense: true,
                                 ),
                                 value:
                                     course.credit == 0 ? null : course.credit,
@@ -209,6 +222,7 @@ class _HomePageState extends State<HomePage> {
                               child: DropdownButtonFormField<CourseGrade>(
                                 decoration: decoration.copyWith(
                                   labelText: 'Grade',
+                                  isDense: true,
                                 ),
                                 value: course.grade,
                                 items:
@@ -243,7 +257,14 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
+              // backgroundColor: isDarkMode ? null : Theme.of(context).colorScheme.primary,
               onPressed: () {
+                if (courses.length == 1 &&
+                    courses[0].credit == 0 &&
+                    courses[0].grade == null) {
+                  return;
+                }
+
                 // show dialog to confirm reset
                 showDialog(
                   context: context,
@@ -264,6 +285,7 @@ class _HomePageState extends State<HomePage> {
                             setState(() {
                               courses = [Course.empty()];
                             });
+                            FocusScope.of(context).unfocus();
                           },
                           child: Text(
                             'Reset',
@@ -275,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               },
-              child: Icon(Icons.restart_alt),
+              child: Icon(LucideIcons.rotateCcw),
             ),
             SizedBox(width: 10),
             FloatingActionButton.extended(
@@ -283,7 +305,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: calculateGPA,
               tooltip: 'Increment',
               label: Text('Calculate', style: TextStyle(color: Colors.white)),
-              icon: const Icon(Icons.calculate_outlined, color: Colors.white),
+              icon: const Icon(LucideIcons.calculator, color: Colors.white),
             ),
           ],
         ),

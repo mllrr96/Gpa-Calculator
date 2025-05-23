@@ -1,6 +1,6 @@
 # GPA Calculator 📊
 
-A simple Flutter app that helps students calculate their GPA based on letter grades and credit hours. Supports both undergraduate and MBA grading systems.
+A simple Flutter app that helps students calculate their GPA based on letter grades and credit hours.
 
 ## 🚀 Features
 

@@ -132,14 +132,15 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 if (courses.length == 1 &&
                     courses[0].credit == 0 &&
+                    courses[0].courseName == null &&
                     courses[0].grade == null) {
                   return;
                 }
                 // show dialog to confirm reset
                 if (await context.showConfirmResetDialog()) {
-                  setState(() {
-                    courses = [Course.empty()];
-                  });
+                  courses.clear();
+                  await Future.delayed(const Duration(milliseconds: 50));
+                  courses.add(Course.empty());
                   if (context.mounted) {
                     context.unfocus();
                   }
@@ -151,7 +152,7 @@ class _HomePageState extends State<HomePage> {
             FloatingActionButton.extended(
               backgroundColor: Theme.of(context).colorScheme.secondary,
               onPressed: calculateGPA,
-              tooltip: 'Increment',
+              tooltip: 'Calculate GPA',
               label: Text('Calculate', style: TextStyle(color: Colors.white)),
               icon: const Icon(LucideIcons.calculator, color: Colors.white),
             ),

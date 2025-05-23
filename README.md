@@ -1,16 +1,25 @@
-# gpa_calculator
+# GPA Calculator 📊
 
-A new Flutter project.
+A simple Flutter app that helps students calculate their GPA based on letter grades and credit hours. Supports both undergraduate and MBA grading systems.
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter application.
+- Dynamic course entry
+- Grade-to-point calculation
+- Separate modes for Undergraduate and MBA
+- Responsive design
+- Custom UI styling
 
-A few resources to get you started if this is your first Flutter project:
+## 🖼️ Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+| Home Screen                                                                             | Grade Entry                                                                            | GPA Result                                                                            |
+|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| ![Home](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home-Empty.png) | ![Home](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home.png) | ![Result](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Result.png) |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📦 Getting Started
+
+```bash
+git clone https://github.com/mllrr96/gpa_calculator.git
+cd gpa_calculator
+flutter pub get
+flutter run

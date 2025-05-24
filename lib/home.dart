@@ -75,79 +75,89 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: SegmentedButton(
-                expandedInsets: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 8,
-                ),
-                segments: <ButtonSegment>[
-                  ButtonSegment(value: 0, label: Text('UG')),
-                  ButtonSegment(value: 1, label: Text('MBA')),
-                ],
-                selected: {selectedSegment},
-                onSelectionChanged: (newSelection) {
-                  if (newSelection.isEmpty ||
-                      selectedSegment == newSelection.first) {
-                    return;
-                  }
-                  courses.clear();
-                  courses.add(Course.empty());
-                  selectedSegment = newSelection.first;
-                  setState(() {});
-                  context.unfocus();
-                },
-              ),
+        body: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 500,
             ),
-            Expanded(
-              child: SlidableAutoCloseBehavior(
-                child: ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 150),
-                  itemCount: courses.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == courses.length) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: SizedBox(
-                          height: 70,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setState(() => courses.add(Course.empty()));
-                            },
-                            child: Icon(LucideIcons.plus, size: 30),
-                          ),
-                        ),
-                      );
-                    }
-                    final course = courses[index];
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: SegmentedButton(
+                    expandedInsets: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 8,
+                    ),
+                    segments: <ButtonSegment>[
+                      ButtonSegment(value: 0, label: Text('UG')),
+                      ButtonSegment(value: 1, label: Text('MBA')),
+                    ],
+                    selected: {selectedSegment},
+                    onSelectionChanged: (newSelection) {
+                      if (newSelection.isEmpty ||
+                          selectedSegment == newSelection.first) {
+                        return;
+                      }
+                      courses.clear();
+                      courses.add(Course.empty());
+                      selectedSegment = newSelection.first;
+                      setState(() {});
+                      context.unfocus();
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: SlidableAutoCloseBehavior(
+                    child: ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 150),
+                      itemCount: courses.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == courses.length) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: SizedBox(
+                              height: 70,
+                              child: Tooltip(
+                                message: 'Add Course',
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() => courses.add(Course.empty()));
+                                  },
+                                  child: Icon(LucideIcons.plus, size: 30),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        final course = courses[index];
 
-                    return Slidable(
-                      key: ValueKey(index),
-                      endActionPane: ActionPane(
-                        extentRatio: 0.25,
-                        motion: const BehindMotion(),
-                        children: [
-                          SlidableAction(
-                            onPressed:
-                                (_) => setState(() => courses.removeAt(index)),
-                            backgroundColor: Colors.transparent,
-                            foregroundColor: Colors.red,
-                            icon: LucideIcons.trash2,
-                            borderRadius: BorderRadius.circular(8.0),
+                        return Slidable(
+                          key: ValueKey(index),
+                          endActionPane: ActionPane(
+                            extentRatio: 0.25,
+                            motion: const BehindMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed:
+                                    (_) => setState(() => courses.removeAt(index)),
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: Colors.red,
+                                icon: LucideIcons.trash2,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: CourseCard(course, isMBA: isMBA),
-                    );
-                  },
-                  separatorBuilder: (_, _) => const Gap(10),
+                          child: CourseCard(course, isMBA: isMBA),
+                        );
+                      },
+                      separatorBuilder: (_, _) => const Gap(10),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -168,6 +178,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {});
                 }
               },
+              tooltip: 'Reset',
               child: Icon(LucideIcons.rotateCcw),
             ),
             Gap(10),

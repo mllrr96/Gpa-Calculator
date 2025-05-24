@@ -20,9 +20,9 @@ A simple Flutter app that helps AUIS students calculate their GPA based on lette
 
 ## 🖼️ Screenshots
 
-| Home Screen                                                                             | Grade Entry                                                                            | GPA Result                                                                            |
-|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| ![Home](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home-Empty.png) | ![Home](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home.png) | ![Result](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Result.png) |
+| Home Screen                                                                             | Grade Entry                                                                         | GPA Result                                                                            |
+|-----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| ![Home](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home-Empty.png) | ![Home](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home.png)   | ![Result](https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Result.png) |
 
 ## 📥 Download APK
 

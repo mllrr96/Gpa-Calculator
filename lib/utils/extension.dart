@@ -13,11 +13,11 @@ extension ListCourseExtension on List<Course> {
 }
 
 extension BuildContextExtension on BuildContext {
+  bool get isDarkMode =>
+      MediaQuery.of(this).platformBrightness == Brightness.dark;
 
-  bool get isDarkMode => MediaQuery.of(this).platformBrightness == Brightness.dark;
-
-  void showGpaDialog(String gpa) {
-    showDialog(
+  Future<void> showGpaDialog(String gpa) async {
+    await showDialog(
       context: this,
       builder: (context) {
         return AlertDialog(
@@ -83,7 +83,5 @@ extension BuildContextExtension on BuildContext {
     return result;
   }
 
-  void unfocus() {
-    FocusScope.of(this).unfocus();
-  }
+  void unfocus() => FocusScope.of(this).unfocus();
 }

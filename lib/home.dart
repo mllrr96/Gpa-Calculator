@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   bool get isMBA => selectedSegment == 1;
 
-  void calculateGPA() {
+  Future<void> calculateGPA() async {
     double totalPoints = 0;
     double totalCredits = 0;
 
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
     final gpa = (totalPoints / totalCredits).toStringAsFixed(2);
 
-    context.showGpaDialog(gpa);
+    await context.showGpaDialog(gpa);
   }
 
   @override
@@ -173,7 +173,10 @@ class _HomePageState extends State<HomePage> {
             Gap(10),
             FloatingActionButton.extended(
               backgroundColor: Theme.of(context).colorScheme.secondary,
-              onPressed: calculateGPA,
+              onPressed: () async {
+                FocusManager.instance.primaryFocus?.unfocus();
+                await calculateGPA();
+              },
               tooltip: 'Calculate GPA',
               label: Text('Calculate', style: TextStyle(color: Colors.white)),
               icon: const Icon(LucideIcons.calculator, color: Colors.white),

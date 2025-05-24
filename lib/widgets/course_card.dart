@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:gpa_calculator/course_model.dart';
+import 'package:gpa_calculator/models/course_model.dart';
 
-import 'course_grade_enum.dart';
+import '../models/course_grade_enum.dart';
 
 class CourseCard extends StatelessWidget {
   const CourseCard(this.course, {super.key, this.isMBA = false});

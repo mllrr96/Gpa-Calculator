@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gap/gap.dart';
-import 'package:gpa_calculator/course_card.dart';
-import 'package:gpa_calculator/course_model.dart';
-import 'package:gpa_calculator/extension.dart';
+import 'package:gpa_calculator/widgets/course_card.dart';
+import 'package:gpa_calculator/models/course_model.dart';
+import 'package:gpa_calculator/utils/extension.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
-  final String title;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -58,7 +56,7 @@ class _HomePageState extends State<HomePage> {
               context.isDarkMode
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).colorScheme.primary,
-          title: Text(widget.title, style: TextStyle(color: Colors.white)),
+          title: Text('GPA Calculator', style: TextStyle(color: Colors.white)),
           actions: [
             IconButton(
               padding: EdgeInsets.all(16.0),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'course_model.dart';
+import '../models/course_model.dart';
 
 extension ListCourseExtension on List<Course> {
   bool get shouldNotReset {

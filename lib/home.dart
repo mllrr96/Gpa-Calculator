@@ -20,15 +20,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Course> courses = [Course.empty()];
+  int selectedSegment = 0;
+
+  bool get isMBA => selectedSegment == 1;
 
   void calculateGPA() {
     double totalPoints = 0;
     double totalCredits = 0;
 
     for (var course in courses) {
-      if (course.credit == 0 || course.grade == null) continue;
-      int credits = course.credit;
-      totalPoints += course.totalPoints;
+      if ((course.credit == 0 && !isMBA) || course.grade == null) continue;
+      int credits = isMBA ? 2 : course.credit;
+      totalPoints += course.totalPoints(isMBA: isMBA);
       totalCredits += credits;
     }
 
@@ -107,47 +110,79 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: SlidableAutoCloseBehavior(
-          child: ListView.separated(
-            padding: const EdgeInsets.fromLTRB(24, 18, 24, 150),
-            itemCount: courses.length + 1,
-            itemBuilder: (context, index) {
-              if (index == courses.length) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: SizedBox(
-                    height: 70,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() => courses.add(Course.empty()));
-                      },
-                      child: Icon(LucideIcons.plus, size: 30),
-                    ),
-                  ),
-                );
-              }
-              final course = courses[index];
-
-              return Slidable(
-                key: ValueKey(index),
-                endActionPane: ActionPane(
-                  extentRatio: 0.25,
-                  motion: const BehindMotion(),
-                  children: [
-                    SlidableAction(
-                      onPressed: (_) => setState(() => courses.removeAt(index)),
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: Colors.red,
-                      icon: LucideIcons.trash2,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ],
+        body: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: SegmentedButton(
+                expandedInsets: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 8,
                 ),
-                child: CourseCard(course),
-              );
-            },
-            separatorBuilder: (_, _) => const Gap(10),
-          ),
+                segments: <ButtonSegment>[
+                  ButtonSegment(value: 0, label: Text('UG')),
+                  ButtonSegment(value: 1, label: Text('MBA')),
+                ],
+                selected: {selectedSegment},
+                onSelectionChanged: (newSelection) {
+                  if (newSelection.isEmpty ||
+                      selectedSegment == newSelection.first) {
+                    return;
+                  }
+                  courses.clear();
+                  courses.add(Course.empty());
+                  selectedSegment = newSelection.first;
+                  setState(() {});
+                  context.unfocus();
+                },
+              ),
+            ),
+            Expanded(
+              child: SlidableAutoCloseBehavior(
+                child: ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 150),
+                  itemCount: courses.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == courses.length) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: SizedBox(
+                          height: 70,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() => courses.add(Course.empty()));
+                            },
+                            child: Icon(LucideIcons.plus, size: 30),
+                          ),
+                        ),
+                      );
+                    }
+                    final course = courses[index];
+
+                    return Slidable(
+                      key: ValueKey(index),
+                      endActionPane: ActionPane(
+                        extentRatio: 0.25,
+                        motion: const BehindMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed:
+                                (_) => setState(() => courses.removeAt(index)),
+                            backgroundColor: Colors.transparent,
+                            foregroundColor: Colors.red,
+                            icon: LucideIcons.trash2,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ],
+                      ),
+                      child: CourseCard(course, isMBA: isMBA),
+                    );
+                  },
+                  separatorBuilder: (_, _) => const Gap(10),
+                ),
+              ),
+            ),
+          ],
         ),
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,

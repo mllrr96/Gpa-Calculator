@@ -9,8 +9,9 @@ class Course {
 
   Course.empty() : courseName = '', credit = 0, grade = null;
 
-  double get totalPoints {
+  double totalPoints({bool isMBA = false}) {
     if (grade == null) return 0.0;
+    final int credit = isMBA ? 2 : this.credit;
     return grade!.gradePoint * credit;
   }
 }

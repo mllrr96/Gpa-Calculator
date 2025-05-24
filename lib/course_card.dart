@@ -5,12 +5,24 @@ import 'package:gpa_calculator/course_model.dart';
 import 'course_grade_enum.dart';
 
 class CourseCard extends StatelessWidget {
-  const CourseCard(this.course, {super.key});
+  const CourseCard(this.course, {super.key, this.isMBA = false});
 
   final Course course;
+  final bool isMBA;
 
   @override
   Widget build(BuildContext context) {
+    const allowedMBA = {
+      CourseGrade.A,
+      CourseGrade.aMinus,
+      CourseGrade.bPlus,
+      CourseGrade.B,
+      CourseGrade.bMinus,
+      CourseGrade.cPlus,
+      CourseGrade.C,
+      CourseGrade.F,
+    };
+
     InputDecoration decoration = InputDecoration(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -41,8 +53,8 @@ class CourseCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (course.totalPoints != 0)
-                  Text(course.totalPoints.toStringAsFixed(2)),
+                if (course.totalPoints(isMBA: isMBA) != 0)
+                  Text(course.totalPoints(isMBA: isMBA).toStringAsFixed(2)),
               ],
             ),
           ),
@@ -58,7 +70,12 @@ class CourseCard extends StatelessWidget {
                       labelText: 'Credit',
                       isDense: true,
                     ),
-                    value: course.credit == 0 ? null : course.credit,
+                    value:
+                        isMBA
+                            ? 2
+                            : course.credit == 0
+                            ? null
+                            : course.credit,
                     items:
                         List.generate(4, (index) => index + 1)
                             .map(
@@ -68,10 +85,13 @@ class CourseCard extends StatelessWidget {
                               ),
                             )
                             .toList(),
-                    onChanged: (credit) {
-                      if (credit == null) return;
-                      course.credit = credit;
-                    },
+                    onChanged:
+                        isMBA
+                            ? null
+                            : (credit) {
+                              if (credit == null) return;
+                              course.credit = credit;
+                            },
                   ),
                 ),
                 Flexible(child: SizedBox.shrink()),
@@ -84,12 +104,17 @@ class CourseCard extends StatelessWidget {
                     ),
                     value: course.grade,
                     items:
-                        CourseGrade.values.map((CourseGrade grade) {
-                          return DropdownMenuItem<CourseGrade>(
-                            value: grade,
-                            child: Text(grade.displayName),
-                          );
-                        }).toList(),
+                        CourseGrade.values
+                            .where(
+                              (grade) => !isMBA || allowedMBA.contains(grade),
+                            ) // filter first
+                            .map((CourseGrade grade) {
+                              return DropdownMenuItem<CourseGrade>(
+                                value: grade,
+                                child: Text(grade.displayName),
+                              );
+                            })
+                            .toList(),
                     onChanged: (grade) {
                       if (grade == null) return;
                       course.grade = grade;

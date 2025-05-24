@@ -77,7 +77,7 @@ class CourseCard extends StatelessWidget {
                             ? null
                             : course.credit,
                     items:
-                        List.generate(4, (index) => index + 1)
+                        [1, 2, 3, 4, 6]
                             .map(
                               (int credit) => DropdownMenuItem<int>(
                                 value: credit,

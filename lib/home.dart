@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                 showAboutDialog(
                   context: context,
                   applicationName: 'GPA Calculator',
-                  applicationVersion: '1.0.1',
+                  applicationVersion: '1.0.2',
                   applicationIcon: Icon(
                     LucideIcons.calculator,
                     color: Color(0xFFC89601),

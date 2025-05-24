@@ -12,23 +12,28 @@ class AppTheme {
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.white;
+            return Color(0xffF3F3FA);
           }
-          return const Color(0xFFF0F0F0); // light unselected
+          return Colors.transparent;
         }),
-        foregroundColor: WidgetStateProperty.resolveWith((states) {
-          return states.contains(WidgetState.selected)
-              ? Colors.black
-              : Colors.grey[700];
-        }),
-        textStyle: WidgetStateProperty.resolveWith((states) {
-          return TextStyle(
+        foregroundColor: WidgetStateProperty.resolveWith(
+          (states) =>
+              states.contains(WidgetState.selected)
+                  ? Colors.black
+                  : Colors.grey[700],
+        ),
+        textStyle: WidgetStateProperty.resolveWith(
+          (states) => TextStyle(
             fontWeight:
                 states.contains(WidgetState.selected)
                     ? FontWeight.bold
                     : FontWeight.normal,
-          );
-        }),
+            fontSize: 16,
+          ),
+        ),
+        side: WidgetStateProperty.resolveWith<BorderSide>(
+          (states) => BorderSide(color: Colors.grey[300]!),
+        ),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
@@ -49,23 +54,29 @@ class AppTheme {
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return Color(0xFF002956).withValues(alpha: 0.5);
+            // return Color(0xFF002956).withValues(alpha: 0.5);
+            return const Color(0xFF181C20);
           }
-          return const Color(0xFF1C1C1E);
+          return Colors.transparent;
         }),
-        foregroundColor: WidgetStateProperty.resolveWith((states) {
-          return states.contains(WidgetState.selected)
-              ? Colors.white
-              : Colors.grey[300];
-        }),
-        textStyle: WidgetStateProperty.resolveWith((states) {
-          return TextStyle(
+        foregroundColor: WidgetStateProperty.resolveWith(
+          (states) =>
+              states.contains(WidgetState.selected)
+                  ? Colors.white
+                  : Colors.grey[300],
+        ),
+        textStyle: WidgetStateProperty.resolveWith(
+          (states) => TextStyle(
             fontWeight:
                 states.contains(WidgetState.selected)
                     ? FontWeight.bold
                     : FontWeight.normal,
-          );
-        }),
+            fontSize: 16,
+          ),
+        ),
+        side: WidgetStateProperty.resolveWith<BorderSide>(
+          (states) => BorderSide(color: const Color(0xFF181C20)),
+        ),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),

@@ -5,9 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:gpa_calculator/widgets/course_card.dart';
 import 'package:gpa_calculator/models/course_model.dart';
 import 'package:gpa_calculator/utils/extension.dart';
-import 'package:lottie/lottie.dart';
+import 'package:gpa_calculator/widgets/info_widget.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -54,7 +53,7 @@ class _HomePageState extends State<HomePage> {
           ),
           backgroundColor:
               context.isDarkMode
-                  ? Theme.of(context).colorScheme.secondary
+                  ? Theme.of(context).colorScheme.primaryContainer
                   : Theme.of(context).colorScheme.primary,
           title: Text('GPA Calculator', style: TextStyle(color: Colors.white)),
           actions: [
@@ -70,39 +69,7 @@ class _HomePageState extends State<HomePage> {
                     LucideIcons.calculator,
                     color: Color(0xFFC89601),
                   ),
-                  children: [
-                    Text('This app helps you calculate your GPA.'),
-                    Divider(),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(8.0),
-                      onTap: () {
-                        try {
-                          launchUrl(
-                            Uri.parse(
-                              'https://github.com/mllrr96/Gpa-Calculator',
-                            ),
-                          );
-                        } catch (_) {}
-                      },
-                      child: Ink(
-                        child: Row(
-                          children: [
-                            Lottie.asset(
-                              context.isDarkMode
-                                  ? 'assets/lottie/github-light.json'
-                                  : 'assets/lottie/github-dark.json',
-                              width: 40,
-                              height: 40,
-                            ),
-                            Gap(10),
-                            Flexible(
-                              child: Text('Made with love by Mohammed Ragheb'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                  children: [InfoWidget()],
                 );
               },
             ),
@@ -191,13 +158,14 @@ class _HomePageState extends State<HomePage> {
                   return;
                 }
                 // show dialog to confirm reset
-                if (await context.showConfirmResetDialog()) {
+                if (courses.isEmpty || await context.showConfirmResetDialog()) {
                   courses.clear();
                   await Future.delayed(const Duration(milliseconds: 50));
                   courses.add(Course.empty());
                   if (context.mounted) {
                     context.unfocus();
                   }
+                  setState(() {});
                 }
               },
               child: Icon(LucideIcons.rotateCcw),

@@ -1,5 +1,7 @@
 # GPA Calculator 📊
 
+[![Try It Online](https://img.shields.io/badge/Live%20Demo-Web%20App-blue?logo=flutter&logoColor=white)](https://mllrr96.github.io/Gpa-Calculator/)
+
 A simple Flutter app that helps AUIS students calculate their GPA based on letter grades and credit hours.
 
 > 🎓 **Note:** This app is specifically designed for students of [The American University of Iraq, Sulaimani (AUIS)](https://auis.edu.krd/), and follows the official GPA calculation policy described in [How to Calculate Your GPA](https://auis.edu.krd/how-calculate-your-gpa).
@@ -33,7 +35,14 @@ A simple Flutter app that helps AUIS students calculate their GPA based on lette
   </tr>
 </table>
 
-## 📥 Download APK
+## 🌐 Try It Online
+
+Want to test the GPA Calculator without installing anything?
+
+**[Launch the Web App](https://mllrr96.github.io/Gpa-Calculator/)**  
+Runs entirely in your browser — no setup needed.
+
+## 📥 Download APK for Android devices
 
 You can download the APK file for Android devices from the [Releases Page](https://github.com/mllrr96/gpa_calculator/releases/)
 

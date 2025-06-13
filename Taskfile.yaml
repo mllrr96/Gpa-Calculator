@@ -29,6 +29,13 @@ tasks:
     cmds:
       - flutter build apk --release
 
+  gen:web:
+    desc: Generate apk release
+    summary: |
+      Run codegen
+    cmds:
+      - flutter build web --base-href="/Gpa-Calculator/"
+
   gen:apk:split:
     desc: Generate apk release
     summary: |

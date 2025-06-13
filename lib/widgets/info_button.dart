@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class CopyButton extends StatelessWidget {
-  const CopyButton(this.message, {super.key});
+class InfoButton extends StatelessWidget {
+  const InfoButton(this.message, {super.key});
 
   final String message;
 

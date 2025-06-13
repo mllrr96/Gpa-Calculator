@@ -13,6 +13,10 @@ extension ListCourseExtension on List<Course> {
 }
 
 extension BuildContextExtension on BuildContext {
+  double get usableBodyHeight =>
+      MediaQuery.of(this).size.height -
+      Scaffold.of(this).appBarMaxHeight!;
+
   bool get isMobile => MediaQuery.of(this).size.width < 600;
   // bool get isDesktop => MediaQuery.of(this).size.width >= 1200;
   bool get isDarkMode =>

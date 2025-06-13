@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gap/gap.dart';
 import 'package:gpa_calculator/result_screen.dart';
 import 'package:gpa_calculator/utils/app_constant.dart';
+import 'package:gpa_calculator/utils/gpa_utils.dart';
 import 'package:gpa_calculator/widgets/course_card.dart';
 import 'package:gpa_calculator/models/course_model.dart';
 import 'package:gpa_calculator/utils/extension.dart';
@@ -31,17 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading = false;
 
   Future<void> calculateGPA() async {
-    double totalPoints = 0;
-    double totalCredits = 0;
+    final result = calculateGpa(courses, isMBA: isMBA);
 
-    for (var course in courses) {
-      if ((course.credit == 0 && !isMBA) || course.grade == null) continue;
-      int credits = isMBA ? 2 : course.credit;
-      totalPoints += course.totalPoints(isMBA: isMBA);
-      totalCredits += credits;
-    }
-
-    if (totalCredits == 0) {
+    if (result.totalCredits == 0) {
       return;
     }
 
@@ -53,8 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
           fullscreenDialog: true,
           builder:
               (context) => ResultScreen(
-                totalPoints: totalPoints,
-                totalCredits: totalCredits,
+                totalPoints: result.totalPoints,
+                totalCredits: result.totalCredits,
               ),
         ),
       );
@@ -70,6 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
       for (var course in courses) {
         course.courseNameController?.dispose();
       }
+      try {
+        final pref = await SharedPreferences.getInstance();
+        pref.remove(AppConstant.savedCoursesKey);
+      } catch (_) {}
+      // Clear saved courses and mode
       courses.clear();
       await Future.delayed(const Duration(milliseconds: 50));
       courses.add(Course.empty());
@@ -300,6 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       heroTag: 'addCourse',
                       onPressed: clearCourses,
                       tooltip: 'Clear Courses',
+                      foregroundColor: context.isDarkMode ? null : Colors.black,
                       child: Icon(LucideIcons.rotateCcw),
                     ),
                     Gap(10),
@@ -311,10 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         await calculateGPA();
                       },
                       tooltip: 'Calculate GPA',
-                      label: Text(
-                        'Calculate',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      label: Text('Calculate'),
                       icon: const Icon(
                         LucideIcons.calculator,
                         color: Colors.white,
@@ -324,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
                 : FloatingActionButton(
                   onPressed: showInfoDialog,
-                  child: Icon(LucideIcons.info, color: Colors.white),
+                  child: Icon(LucideIcons.info),
                 ),
       ),
     );

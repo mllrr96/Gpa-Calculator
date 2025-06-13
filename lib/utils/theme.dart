@@ -8,6 +8,9 @@ class AppTheme {
       seedColor: const Color(0xFF002956),
       secondary: const Color(0xFFC89601),
     ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: Colors.white,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius:
@@ -65,6 +68,9 @@ class AppTheme {
       seedColor: const Color(0xFF002956),
       secondary: const Color(0xFFC89601),
       brightness: Brightness.dark,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: Colors.white,
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(

@@ -58,11 +58,15 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   Future<void> calculateCGPA() async {
+    bool skipValidation = false;
     if (!showCGPA) {
+      skipValidation = true;
       setState(() => showCGPA = true);
     }
-    if (!formKey.currentState!.validate()) {
-      return;
+    if (!skipValidation) {
+      if (!formKey.currentState!.validate()) {
+        return;
+      }
     }
     final cgpa = double.tryParse(cgpaCtrl.text);
     final earnedCredits = int.tryParse(earnedCreditsCtrl.text);

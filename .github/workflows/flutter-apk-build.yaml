@@ -33,6 +33,9 @@ jobs:
       - name: Run pub get
         run: flutter pub get
 
+      - name: Run unit tests
+        run: flutter test
+
       - name: Build Split and Universal APKs
         run: |
           flutter build apk --split-per-abi

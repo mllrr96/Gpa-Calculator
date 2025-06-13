@@ -108,7 +108,10 @@ class _ResultScreenState extends State<ResultScreen> {
                   ? null
                   : FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor:
+                context.isDarkMode
+                    ? Theme.of(context).colorScheme.primaryContainer
+                    : Theme.of(context).colorScheme.primary,
             onPressed: calculateCGPA,
             label: Text('Calculate CGPA'),
             icon: const Icon(LucideIcons.calculator, size: 20),

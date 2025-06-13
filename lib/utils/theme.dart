@@ -8,6 +8,22 @@ class AppTheme {
       seedColor: const Color(0xFF002956),
       secondary: const Color(0xFFC89601),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius:
+        BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: Colors.blue,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius:
+        BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+    ),
     segmentedButtonTheme: SegmentedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
@@ -49,6 +65,22 @@ class AppTheme {
       seedColor: const Color(0xFF002956),
       secondary: const Color(0xFFC89601),
       brightness: Brightness.dark,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius:
+        BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: Colors.blue,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius:
+        BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
     ),
     segmentedButtonTheme: SegmentedButtonThemeData(
       style: ButtonStyle(

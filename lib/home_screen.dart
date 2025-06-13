@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
     showAboutDialog(
       context: context,
       applicationName: 'GPA Calculator',
-      applicationVersion: '1.0.2',
+      applicationVersion: '1.0.3',
       applicationIcon: Icon(LucideIcons.calculator, color: Color(0xFFC89601)),
       children: [InfoWidget()],
     );

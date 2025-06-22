@@ -1,4 +1,4 @@
-# GPA Calculator 📊
+# GPA Calculator
 
 [![Try It Online](https://img.shields.io/badge/Live%20Demo-Web%20App-blue?logo=flutter&logoColor=white)](https://mllrr96.github.io/Gpa-Calculator/)
 
@@ -7,7 +7,7 @@ A simple Flutter app that helps AUIS students calculate their GPA based on lette
 > 🎓 **Note:** This app is tailored for students at [The American University of Iraq, Sulaimani (AUIS)](https://auis.edu.krd/) and follows the GPA calculation policy outlined in [How to Calculate Your GPA](https://auis.edu.krd/how-calculate-your-gpa).
 
 
-## 🚀 Features
+## Features
 
 - Dynamic GPA calculator for UG and MBA students
 - Accurate GPA & CGPA calculation based on AUIS rules
@@ -16,7 +16,7 @@ A simple Flutter app that helps AUIS students calculate their GPA based on lette
 - Web and Android support
 
 
-## 🆕 What's New in v1.0.3
+## What's New in v1.0.3
 
 - ✅ **Added CGPA calculation**
 - ✅ **Courses and CGPA now auto-save and persist across sessions**
@@ -24,19 +24,19 @@ A simple Flutter app that helps AUIS students calculate their GPA based on lette
 - ✅ **Improved code structure and added tests for GPA calculation**
 
 
-## 🎓 UG vs MBA GPA Rules
+## UG vs MBA GPA Rules
 
 - **UG**: Uses custom credit hours and full grade scale (A to F)
 - **MBA**: Fixed 2-credit courses with limited grade range (A to C, F)
 
 
-## 📥 Try It Online or Download
+## Try It Online or Download
 
 - **Web**: [Launch Web App](https://mllrr96.github.io/Gpa-Calculator/)
 - **Android**: [Download APK](https://github.com/mllrr96/Gpa-Calculator/releases)
 
 
-## 🖼️ Screenshots
+##  Screenshots
 
 <table>
   <tr>
@@ -51,7 +51,7 @@ A simple Flutter app that helps AUIS students calculate their GPA based on lette
   </tr>
 </table>
 
-## 📦 Build from Source
+## Build from Source
 
 ### Clone the repository to your local machine
 ```bash

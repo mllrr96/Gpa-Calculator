@@ -76,7 +76,7 @@ class _ResultScreenState extends State<ResultScreen> {
       return;
     }
 
-    final newCGPA = calculateNewCGPA(
+    final newCGPA = GpaUtils.calculateNewCGPA(
       currentCGPA: cgpa,
       earnedCredits: earnedCredits,
       newPoints: widget.totalPoints,

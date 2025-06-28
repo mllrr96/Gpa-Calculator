@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading = false;
 
   Future<void> calculateGPA() async {
-    final result = calculateGpa(courses, isMBA: isMBA);
+    final result = GpaUtils.calculateGpa(courses, isMBA: isMBA);
 
     if (result.totalCredits == 0) {
       return;

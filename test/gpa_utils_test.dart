@@ -30,7 +30,7 @@ void main() {
         ),
       ];
 
-      final result = calculateGpa(courses, isMBA: false);
+      final result = GpaUtils.calculateGpa(courses, isMBA: false);
       expect(result.totalCredits, 9);
       expect(result.totalPoints.toStringAsFixed(1), '28.0');
       expect(result.gpa.toStringAsFixed(2), '3.11');
@@ -58,7 +58,7 @@ void main() {
         ),
       ];
 
-      final result = calculateGpa(courses, isMBA: true);
+      final result = GpaUtils.calculateGpa(courses, isMBA: true);
       expect(result.totalCredits, 6); // 3 courses * 2 credits each
       expect(result.totalPoints.toStringAsFixed(1), '18.0'); // (4+3+2)*2
       expect(result.gpa.toStringAsFixed(2), '3.00');
@@ -80,32 +80,39 @@ void main() {
         ),
       ];
 
-      final result = calculateGpa(courses, isMBA: false);
+      final result = GpaUtils.calculateGpa(courses, isMBA: false);
       expect(result.totalCredits, 0);
       expect(result.gpa.toStringAsFixed(2), '0.00');
     });
 
     test('GPA Calculation with all grade types (UG)', () {
       final grades = CourseGrade.values;
-      final courses = grades.map((grade) {
-        return Course(
-          courseName: grade.displayName,
-          credit: 1,
-          grade: grade,
-          courseNameController: null,
-        );
-      }).toList();
+      final courses =
+          grades.map((grade) {
+            return Course(
+              courseName: grade.displayName,
+              credit: 1,
+              grade: grade,
+              courseNameController: null,
+            );
+          }).toList();
 
-      final result = calculateGpa(courses, isMBA: false);
+      final result = GpaUtils.calculateGpa(courses, isMBA: false);
 
       final expectedPoints = grades.fold<double>(
         0,
-            (sum, grade) => sum + grade.gradePoint,
+        (sum, grade) => sum + grade.gradePoint,
       );
 
       expect(result.totalCredits, grades.length);
-      expect(result.totalPoints.toStringAsFixed(2), expectedPoints.toStringAsFixed(2));
-      expect(result.gpa.toStringAsFixed(2), (expectedPoints / grades.length).toStringAsFixed(2));
+      expect(
+        result.totalPoints.toStringAsFixed(2),
+        expectedPoints.toStringAsFixed(2),
+      );
+      expect(
+        result.gpa.toStringAsFixed(2),
+        (expectedPoints / grades.length).toStringAsFixed(2),
+      );
     });
   });
 }

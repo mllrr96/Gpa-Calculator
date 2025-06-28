@@ -4,7 +4,7 @@ import 'package:gpa_calculator/utils/gpa_utils.dart';
 void main() {
   group('calculateNewCGPA', () {
     test('calculates correctly with normal values', () {
-      final result = calculateNewCGPA(
+      final result = GpaUtils.calculateNewCGPA(
         currentCGPA: 3.5,
         earnedCredits: 40,
         newPoints: 36.0, // e.g., GPA = 3.0 with 12 credits
@@ -16,7 +16,7 @@ void main() {
     });
 
     test('returns correct value when currentCGPA is 0', () {
-      final result = calculateNewCGPA(
+      final result = GpaUtils.calculateNewCGPA(
         currentCGPA: 0.0,
         earnedCredits: 0,
         newPoints: 36.0,
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('returns currentCGPA if no new points are added', () {
-      final result = calculateNewCGPA(
+      final result = GpaUtils.calculateNewCGPA(
         currentCGPA: 3.2,
         earnedCredits: 30,
         newPoints: 0.0,
@@ -38,7 +38,7 @@ void main() {
     });
 
     test('returns new GPA if there are no previous credits', () {
-      final result = calculateNewCGPA(
+      final result = GpaUtils.calculateNewCGPA(
         currentCGPA: 0.0,
         earnedCredits: 0,
         newPoints: 16.0,
@@ -49,7 +49,7 @@ void main() {
     });
 
     test('handles decimal precision correctly', () {
-      final result = calculateNewCGPA(
+      final result = GpaUtils.calculateNewCGPA(
         currentCGPA: 3.25,
         earnedCredits: 50,
         newPoints: 30.0,

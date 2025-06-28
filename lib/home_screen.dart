@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gap/gap.dart';
+import 'package:gpa_calculator/database.dart';
 import 'package:gpa_calculator/result_screen.dart';
 import 'package:gpa_calculator/utils/app_constant.dart';
 import 'package:gpa_calculator/utils/gpa_utils.dart';
@@ -12,7 +13,9 @@ import 'package:gpa_calculator/models/course_model.dart';
 import 'package:gpa_calculator/utils/extension.dart';
 import 'package:gpa_calculator/widgets/desktop_buttons.dart';
 import 'package:gpa_calculator/widgets/desktop_widget.dart';
+import 'package:gpa_calculator/widgets/home_fab.dart';
 import 'package:gpa_calculator/widgets/info_widget.dart';
+import 'package:gpa_calculator/widgets/ug_mba_segmented_button.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -25,7 +28,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Course> courses = [Course.empty()];
+  late final DatabaseRepository dbRepo;
+  List<Course> ugCourses = [Course.empty()];
+  List<Course> mbaCourses = [Course.empty()];
+
+  List<Course> get courses => isMBA ? mbaCourses : ugCourses;
   int selectedSegment = 0;
 
   bool get isMBA => selectedSegment == 1;
@@ -38,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
-    await saveCoursesAndMode(courses, isMBA);
+    await saveCourses(courses, isMBA);
 
     if (mounted) {
       await Navigator.of(context).push(
@@ -48,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               (context) => ResultScreen(
                 totalPoints: result.totalPoints,
                 totalCredits: result.totalCredits,
+                isMBA: isMBA,
               ),
         ),
       );
@@ -55,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> clearCourses() async {
-    if (courses.shouldNotReset) {
+    if (isMBA ? courses.shouldNotReset : courses.shouldNotReset) {
       return;
     }
     // show dialog to confirm reset
@@ -63,10 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
       for (var course in courses) {
         course.courseNameController?.dispose();
       }
-      try {
-        final pref = await SharedPreferences.getInstance();
-        pref.remove(AppConstant.savedCoursesKey);
-      } catch (_) {}
+      dbRepo.remove(AppConstant.savedCoursesKey);
       // Clear saved courses and mode
       courses.clear();
       await Future.delayed(const Duration(milliseconds: 50));
@@ -79,68 +84,84 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void addCourse() {
-    setState(() => courses.add(Course.empty()));
+    setState(
+      () =>
+          isMBA
+              ? mbaCourses.add(Course.empty())
+              : ugCourses.add(Course.empty()),
+    );
   }
 
   void showInfoDialog() {
     showAboutDialog(
       context: context,
-      applicationName: 'GPA Calculator',
-      applicationVersion: '1.0.4',
+      applicationName: AppConstant.appName,
+      applicationVersion: AppConstant.appVersion,
       applicationIcon: Icon(LucideIcons.calculator, color: Color(0xFFC89601)),
       children: [InfoWidget()],
     );
   }
 
-  Future<void> saveCoursesAndMode(List<Course> courses, bool isMBA) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-
-      // Save course list
-      final courseList = courses.map((course) => course.toJson()).toList();
-      final encodedCourses = jsonEncode(courseList);
-      await prefs.setString(AppConstant.savedCoursesKey, encodedCourses);
-
-      // Save mode
-      await prefs.setBool(AppConstant.isMBAKey, isMBA);
-    } catch (_) {}
+  Future<void> saveCourses(List<Course> courses, bool isMBA) async {
+    final courseList = courses.map((course) => course.toJson()).toList();
+    final encodedCourses = jsonEncode(courseList);
+    await dbRepo.set<String>(
+      isMBA ? AppConstant.savedMbaCoursesKey : AppConstant.savedCoursesKey,
+      encodedCourses,
+    );
   }
 
+  Future<void> saveMode(bool isMBA) async =>
+      await dbRepo.set<bool>(AppConstant.isMBAKey, isMBA);
+
   Future<void> loadCoursesAndMode() async {
-    try {
-      setState(() => loading = true);
-      final prefs = await SharedPreferences.getInstance();
+    setState(() => loading = true);
 
-      // Load courses
-      final encoded = prefs.getString(AppConstant.savedCoursesKey);
-      List<Course> courses = [];
-      if (encoded != null) {
-        final List<dynamic> decoded = jsonDecode(encoded);
-        courses = decoded.map((json) => Course.fromJson(json)).toList();
-      }
+    // Load courses
+    final encodedCourses = dbRepo.get<String>(AppConstant.savedCoursesKey);
+    final encodedMbaCourses = dbRepo.get<String>(
+      AppConstant.savedMbaCoursesKey,
+    );
+    List<Course> courses = [];
+    List<Course> mbaCourses = [];
 
-      // Load mode
-      final isMBA = prefs.getBool(AppConstant.isMBAKey) ?? false;
-      if (courses.isEmpty && !isMBA) {
-        setState(() => loading = false);
-        return;
-      }
+    if (encodedCourses != null) {
+      final List<dynamic> decoded = jsonDecode(encodedCourses);
+      courses = decoded.map((json) => Course.fromJson(json)).toList();
+    }
+    if (encodedMbaCourses != null) {
+      final List<dynamic> decoded = jsonDecode(encodedMbaCourses);
+      mbaCourses = decoded.map((json) => Course.fromJson(json)).toList();
+    }
 
-      this.courses = courses.isNotEmpty ? courses : [Course.empty()];
-      selectedSegment = isMBA ? 1 : 0;
+    // Load mode
+    final isMBA = dbRepo.get<bool>(AppConstant.isMBAKey) ?? false;
+    if (courses.isEmpty && !isMBA) {
       setState(() => loading = false);
-    } catch (_) {}
+      return;
+    }
+
+    ugCourses = courses.isNotEmpty ? courses : [Course.empty()];
+    this.mbaCourses = mbaCourses.isNotEmpty ? mbaCourses : [Course.empty()];
+    selectedSegment = isMBA ? 1 : 0;
+    setState(() => loading = false);
+  }
+
+  Future<void> initDb() async {
+    dbRepo = DatabaseRepository(await SharedPreferences.getInstance());
   }
 
   @override
   void initState() {
-    // Load saved courses and mode
-    loadCoursesAndMode();
+    initDb().then((_) {
+      loadCoursesAndMode();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: context.unfocus,
       child: Scaffold(
@@ -153,8 +174,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           backgroundColor:
               context.isDarkMode
-                  ? Theme.of(context).colorScheme.primaryContainer
-                  : Theme.of(context).colorScheme.primary,
+                  ? theme.colorScheme.primaryContainer
+                  : theme.colorScheme.primary,
           title: Text('GPA Calculator', style: TextStyle(color: Colors.white)),
           actions: [
             if (context.isMobile)
@@ -175,36 +196,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     width: context.isMobile ? double.infinity : 500,
                     child: Skeleton.shade(
-                      child: SegmentedButton(
-                        expandedInsets: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 8,
-                        ),
-                        segments: <ButtonSegment>[
-                          ButtonSegment(value: 0, label: Text('UG')),
-                          ButtonSegment(value: 1, label: Text('MBA')),
-                        ],
-                        style: ButtonStyle(
-                          padding:
-                              context.isMobile
-                                  ? null
-                                  : WidgetStateProperty.all(
-                                    const EdgeInsets.symmetric(
-                                      horizontal: 24,
-                                      vertical: 30,
-                                    ),
-                                  ),
-                        ),
-                        selected: {selectedSegment},
-                        onSelectionChanged: (newSelection) {
+                      child: UgMbaSegmentedButton(
+                        selectedSegment: selectedSegment,
+                        onSegmentSelected: (newSelection) {
                           if (newSelection.isEmpty ||
                               selectedSegment == newSelection.first) {
                             return;
                           }
-                          courses.clear();
-                          courses.add(Course.empty());
                           selectedSegment = newSelection.first;
                           setState(() {});
+                          saveMode(newSelection.first == 1);
                           context.unfocus();
                         },
                       ),
@@ -289,39 +290,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        floatingActionButton:
-            context.isMobile
-                ? Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FloatingActionButton(
-                      heroTag: 'addCourse',
-                      onPressed: clearCourses,
-                      tooltip: 'Clear Courses',
-                      foregroundColor: context.isDarkMode ? null : Colors.black,
-                      child: Icon(LucideIcons.rotateCcw),
-                    ),
-                    Gap(10),
-                    FloatingActionButton.extended(
-                      // heroTag: 'calculateGPA',
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      onPressed: () async {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        await calculateGPA();
-                      },
-                      tooltip: 'Calculate GPA',
-                      label: Text('Calculate'),
-                      icon: const Icon(
-                        LucideIcons.calculator,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                )
-                : FloatingActionButton(
-                  onPressed: showInfoDialog,
-                  child: Icon(LucideIcons.info),
-                ),
+        floatingActionButton: HomeFab(
+          clearCourses: clearCourses,
+          calculateGPA: calculateGPA,
+        ),
       ),
     );
   }

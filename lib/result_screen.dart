@@ -13,11 +13,12 @@ class ResultScreen extends StatefulWidget {
     super.key,
     required this.totalPoints,
     required this.totalCredits,
+    required this.isMBA,
   });
 
   final double totalPoints;
-
   final double totalCredits;
+  final bool isMBA;
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
@@ -95,102 +96,95 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value:
-          context.isDarkMode
-              ? SystemUiOverlayStyle.dark
-              : SystemUiOverlayStyle.light,
-      child: GestureDetector(
-        onTap: context.unfocus,
-        child: Scaffold(
-          floatingActionButtonLocation:
-              context.isMobile
-                  ? null
-                  : FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: FloatingActionButton.extended(
-            backgroundColor:
-                context.isDarkMode
-                    ? Theme.of(context).colorScheme.primaryContainer
-                    : Theme.of(context).colorScheme.primary,
-            onPressed: calculateCGPA,
-            label: Text('Calculate CGPA'),
-            icon: const Icon(LucideIcons.calculator, size: 20),
+    final theme = Theme.of(context);
+    return GestureDetector(
+      onTap: context.unfocus,
+      child: Scaffold(
+        floatingActionButtonLocation:
+            context.isMobile ? null : FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor:
+              context.isDarkMode
+                  ? theme.colorScheme.primaryContainer
+                  : theme.colorScheme.primary,
+          onPressed: calculateCGPA,
+          label: Text('Calculate CGPA'),
+          icon: const Icon(LucideIcons.calculator, size: 20),
+        ),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text(
+            widget.isMBA ? 'MBA GPA Result' : 'UG GPA Result',
+            style: TextStyle(color: Colors.white),
           ),
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: const Text(
-              'GPA Result',
-              style: TextStyle(color: Colors.white),
-            ),
-            centerTitle: true,
-            surfaceTintColor: Colors.transparent,
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarIconBrightness: Brightness.light,
-              statusBarBrightness: Brightness.dark,
-            ),
-            backgroundColor:
-                context.isDarkMode
-                    ? Theme.of(context).colorScheme.primaryContainer
-                    : Theme.of(context).colorScheme.primary,
-            leading: IconButton(
-              padding: const EdgeInsets.all(16.0),
-              icon: const Icon(LucideIcons.x, size: 24, color: Colors.white),
-              onPressed: () {
-                ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                Navigator.of(context).pop();
-              },
-            ),
+          centerTitle: true,
+          surfaceTintColor: Colors.transparent,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.dark,
           ),
-          body: Builder(
-            builder: (context) {
-              return SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 800),
-                    child: SafeArea(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 400),
-                            curve: Curves.easeInOut,
-                            height:
-                                showCGPA
-                                    ? context.usableBodyHeight * 0.3
-                                    : context.usableBodyHeight,
-                            child: CurrentGpaWidget(gpa: gpa),
-                          ),
-                          AnimatedSize(
-                            duration: Duration(milliseconds: 400),
-                            child: AnimatedOpacity(
-                              duration: Duration(milliseconds: 300),
-                              opacity: showCGPA ? 1.0 : 0.0,
-                              child: Form(
-                                key: formKey,
-                                child: SizedBox(
+          backgroundColor:
+              context.isDarkMode
+                  ? theme.colorScheme.primaryContainer
+                  : theme.colorScheme.primary,
+          leading: IconButton(
+            padding: const EdgeInsets.all(16.0),
+            icon: const Icon(LucideIcons.x, size: 24, color: Colors.white),
+            onPressed: () {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: Builder(
+          builder: (context) {
+            return SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 800),
+                  child: SafeArea(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                          height:
+                              showCGPA
+                                  ? context.usableBodyHeight * 0.3
+                                  : context.usableBodyHeight,
+                          child: CurrentGpaWidget(gpa: gpa),
+                        ),
+                        AnimatedSize(
+                          duration: Duration(milliseconds: 400),
+                          child: AnimatedOpacity(
+                            duration: Duration(milliseconds: 300),
+                            opacity: showCGPA ? 1.0 : 0.0,
+                            child: Form(
+                              key: formKey,
+                              child: SizedBox(
+                                height: context.usableBodyHeight * 0.7,
+                                child: CgpaWidget(
+                                  cgpaCtrl: cgpaCtrl,
+                                  earnedCreditsCtrl: earnedCreditsCtrl,
+                                  cGPA: cGPA,
+                                  gpa: gpa,
                                   height: context.usableBodyHeight * 0.7,
-                                  child: CgpaWidget(
-                                    cgpaCtrl: cgpaCtrl,
-                                    earnedCreditsCtrl: earnedCreditsCtrl,
-                                    cGPA: cGPA,
-                                    gpa: gpa,
-                                    height: context.usableBodyHeight * 0.7,
-                                  ),
                                 ),
                               ),
                             ),
                           ),
-                          // if (context.isMobile) Gap(25),
-                        ],
-                      ),
+                        ),
+                        // if (context.isMobile) Gap(25),
+                      ],
                     ),
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

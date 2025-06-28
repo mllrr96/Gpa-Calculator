@@ -9,20 +9,11 @@ A simple Flutter app that helps AUIS students calculate their GPA based on lette
 
 ## Features
 
-- Dynamic GPA calculator for UG and MBA students
+- GPA calculator for UG and MBA students
 - Accurate GPA & CGPA calculation based on AUIS rules
 - Automatic saving and loading of courses and CGPA
 - Dark mode and responsive design for desktop & mobile
 - Web and Android support
-
-
-## What's New in v1.0.3
-
-- ✅ **Added CGPA calculation**
-- ✅ **Courses and CGPA now auto-save and persist across sessions**
-- ✅ **Bug fix:** Course names no longer disappear when scrolling
-- ✅ **Improved code structure and added tests for GPA calculation**
-
 
 ## UG vs MBA GPA Rules
 

@@ -1,0 +1,14 @@
+This app helps students calculate their Grade Point Average (GPA) and Cumulative GPA (CGPA) quickly and accurately. It follows the grading policies used at the American University of Iraq, Sulaimani (AUIS), making it especially useful for AUIS students, while still being suitable for anyone who wants a reliable GPA calculator.
+
+Features include:
+
+- GPA and CGPA calculation for undergraduate and MBA programs
+
+- Support for variable credit hours and grade scales
+
+- Automatic saving and loading of entered courses and results
+
+- Dark mode and responsive layout for different screen sizes
+
+Undergraduate GPA is calculated with custom credit hours and a full grade scale (A to F). MBA GPA is calculated with fixed two-credit courses and a limited grade range (A to C, F).
+This app makes it simple for students to track their academic performance with accuracy and ease.

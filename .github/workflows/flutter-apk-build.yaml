@@ -36,31 +36,9 @@ jobs:
 
       - name: Run unit tests
         run: flutter test
-      - name: Extract version info from pubspec
-        shell: bash
+      - name: Build APKs
         run: |
-          set -e
-          LINE=$(grep '^version:' pubspec.yaml | head -1)
-          VERSION_NAME=$(echo "$LINE" | sed -E 's/version:\s*([0-9.]+)\+.*/\1/')
-          C=$(echo "$LINE" | sed -E 's/.*\+([0-9]+).*/\1/')    # %c
-          
-          # base per-ABI build numbers (what we pass to --build-number)
-          BASE11=$(( C*10 + 1 ))
-          BASE12=$(( C*10 + 2 ))
-          BASE13=$(( C*10 + 3 ))
-          
-          echo "VERSION_NAME=$VERSION_NAME"           >> $GITHUB_ENV
-          echo "BASE11=$BASE11"                       >> $GITHUB_ENV
-          echo "BASE12=$BASE12"                       >> $GITHUB_ENV
-          echo "BASE13=$BASE13"                       >> $GITHUB_ENV
-
-      - name: Build split APKs (use base numbers)
-        shell: bash
-        run: |
-          set -e
-          flutter build apk --release --split-per-abi --target-platform=android-x64   --build-number=${BASE11}
-          flutter build apk --release --split-per-abi --target-platform=android-arm   --build-number=${BASE12}
-          flutter build apk --release --split-per-abi --target-platform=android-arm64 --build-number=${BASE13}
+          flutter build apk --release --split-per-abi
           flutter build apk --release
 
       - name: Rename APKs

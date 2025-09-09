@@ -76,7 +76,7 @@ class CourseCard extends StatelessWidget {
                                 labelText: 'Credit',
                                 isDense: context.isMobile,
                               ),
-                              value:
+                              initialValue:
                                   isMBA
                                       ? 2
                                       : course.credit == 0
@@ -110,7 +110,7 @@ class CourseCard extends StatelessWidget {
                                 labelText: 'Grade',
                                 isDense: context.isMobile,
                               ),
-                              value: course.grade,
+                              initialValue: course.grade,
                               items:
                                   CourseGrade.values
                                       .where(

@@ -40,9 +40,9 @@ height="80">](https://github.com/mllrr96/Gpa-Calculator/releases)
     <th>GPA Result</th>
   </tr>
   <tr>
-    <td><img src="https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home-Empty.png" width="400"/></td>
-    <td><img src="https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Home.png" width="400"/></td>
-    <td><img src="https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/Result.png" width="400"/></td>
+    <td><img src="https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/iOS/Home-Empty.png" width="400"/></td>
+    <td><img src="https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/iOS/Home.png" width="400"/></td>
+    <td><img src="https://github.com/mllrr96/gpa_calculator/blob/main/screenshots/iOS/Result.png" width="400"/></td>
   </tr>
 </table>
 

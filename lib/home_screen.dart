@@ -169,6 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
           centerTitle: !context.isMobile,
           surfaceTintColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor: theme.scaffoldBackgroundColor,
             statusBarIconBrightness: Brightness.light,
             statusBarBrightness: Brightness.dark,
           ),

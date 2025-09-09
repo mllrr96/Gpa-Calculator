@@ -120,6 +120,7 @@ class _ResultScreenState extends State<ResultScreen> {
           centerTitle: true,
           surfaceTintColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor: theme.scaffoldBackgroundColor,
             statusBarIconBrightness: Brightness.light,
             statusBarBrightness: Brightness.dark,
           ),
